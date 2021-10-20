@@ -1,0 +1,8 @@
+"0","summarize <- ciampittilab %>% "
+"0","  group_by (screen_name) %>% #Agrupar por screen name "
+"0","  summarize (n_tweets = n (), #Cantidad de tweets en total"
+"0","             n_fav = sum (favorite_count), #Total de favoritos (""me gusta"")"
+"0","             n_rt = sum (retweet_count), #Total de Retweets"
+"0","             promedio_fav = round (mean (favorite_count), digits = 1), #Número promedio de favoritos"
+"0","             promedio_rt = round (mean (retweet_count), digits = 1)) %>% #número promedio de retweets"
+"0","  arrange (desc(n_fav)) #Ordenar"

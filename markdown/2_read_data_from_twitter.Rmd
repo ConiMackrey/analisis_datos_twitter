@@ -1,0 +1,205 @@
+---
+title: "Analisis Twitter 2021"
+author: "Constanza Mackrey"
+date: "10/5/2021"
+output: html_document
+---
+#Setup
+```{r}
+library(rtweet)
+library(httpuv)
+library(tidyverse)
+library(readr)
+library(cowplot)
+
+```
+
+
+```{r}
+# whatever name you assigned to your created app
+appname <- "ciampittilab-app"
+
+## api key (example below is not a real key)
+key <- "Fid4dKh0t1cZTI5UB4eMpKrPj"
+
+## api secret (example below is not a real key)
+secret <- "K5XNSZfDZ5B0jmVuQ17ZJCDNGvsxqkqy5eFM1vZstbDTmVTVYK"
+
+
+
+
+
+
+```
+
+
+#Data import
+```{r}
+query <- search_tweets("ciampittilab", n=18000)
+print("ciampittilab")
+```
+
+#Archivo en RDS
+```{r}
+write_rds(ciampittilab, path = file.path("../data/ciampittilab.rds"))
+```
+
+#Actions
+```{r}
+ciampittilab <- query %>%
+  filter (is_retweet =="FALSE") %>%
+  select (screen_name, favorite_count, retweet_count,text) %>%
+  arrange (desc(favorite_count))
+```
+
+#EstadísticaResumidas
+```{r}
+nrow (ciampittilab) #Tweets in total
+
+ciampittilab %>% 
+  select (retweet_count, favorite_count) %>%
+  colSums () #Total number of Retweets and Favorites 
+```
+
+#Summarize
+```{r}
+summarize <- ciampittilab %>% 
+  group_by (screen_name) %>% #Agrupar por screen name 
+  summarize (n_tweets = n (), #Cantidad de tweets en total
+             n_fav = sum (favorite_count), #Total de favoritos ("me gusta")
+             n_rt = sum (retweet_count), #Total de Retweets
+             promedio_fav = round (mean (favorite_count), digits = 1), #Número promedio de favoritos
+             promedio_rt = round (mean (retweet_count), digits = 1)) %>% #número promedio de retweets
+  arrange (desc(n_fav)) #Ordenar
+
+```
+
+
+#VisualizeData
+```{r}
+tiempodetweets <- ts_plot(query, "9 days") +
+  ggplot2::labs(y = "Número de tweets y retweets por 6 días", 
+                x = "Datos obtenidos de la API REST de Twitter a través de rtweet",
+                title = "Estados de Twitter con #ciampittilab") +
+  theme_minimal(base_size = 8) + 
+  theme(panel.grid = element_blank()) 
+
+print (tiempodetweets) 
+```
+
+
+```{r}
+a <- summarize %>% top_n (7, n_fav) %>%
+  ggplot() +
+  geom_bar(aes(x = reorder(screen_name, n_fav), y = n_fav),
+           stat = "identity", fill = "cadetblue4") +
+  geom_text(aes(label = n_fav, y = n_fav, x = screen_name),  
+            hjust=1, size = 2.5, color = "white") +
+  labs(x = NULL, y =  "number of likes", title = "Who recieved more likes?") +
+  coord_flip() + 
+  mitema()
+print (a)
+
+b <- summarize %>% top_n(7, n_rt) %>%
+  ggplot() +
+  geom_bar(aes(x = reorder(screen_name, n_rt), y = n_rt),
+            stat = "identity", fill = "palevioletred") +
+  geom_text(aes(label = n_rt, y = n_rt, x = screen_name),  
+            hjust=1, size = 2.5, color = "white") +
+  labs(x = NULL, y  = "Number of retweets", title = "Amount of retweets") +
+  coord_flip() + 
+  mitema()
+print (b)
+
+
+c <- summarize %>% top_n(7, promedio_fav) %>%
+  ggplot() +
+  geom_bar(aes(x = reorder(screen_name, promedio_fav), y = promedio_fav),
+           stat = "identity", fill = "blue") +
+  geom_text(aes(label = promedio_fav, y = promedio_fav, x = screen_name),  
+            hjust=1, size = 2.5, color = "white") +
+  labs(x = NULL, y = "Promedio de favoritos por tweet",
+       title = "Who received the most favorites on average?")  +
+  coord_flip() +  
+  mitema()
+print (c)
+
+
+d <- summarize %>% top_n(7, promedio_rt) %>%
+  ggplot() +
+  geom_bar(aes(x = reorder(screen_name, promedio_rt), y = promedio_rt),
+           stat = "identity", fill = "hotpink4") +
+  geom_text(aes(label = promedio_rt, y = promedio_rt, x = screen_name),  
+            hjust=1, size = 2.5, color = "white") +
+  labs(x = NULL, y = "Average retweets per tweet", title = "Most retweets on average?") +
+  coord_flip() + 
+  mitema()
+
+
+plot_grid(a,b,c,d) 
+
+
+```
+
+```{r}
+#¿De dónde son los usuarios?
+
+ciampittilab_tweets <- search_tweets("ciampittilab", n = 18000,
+                             include_rts = FALSE)
+head(ciampittilab_tweets, n = 2)
+print (head)
+head(ciampittilab_tweets$screen_name)
+print (head)
+# get a list of unique usernames
+unique(rstats_tweets$screen_name)
+
+#USARIOS
+users <- search_users("ciampittilab",
+                      n = 500)
+print(users)
+head(users, n = 2)
+
+
+# how many locations are represented
+length(unique(users$location))
+## [1] 299
+
+users %>%
+  ggplot(aes(location)) +
+  geom_bar() + coord_flip() +
+      labs(x = "Count",
+      y = "Location",
+      title = "Twitter users - unique locations ")
+
+users %>%
+  count(location, sort = TRUE) %>%
+  mutate(location = reorder(location, n)) %>%
+  top_n(20) %>%
+  ggplot(aes(x = location, y = n)) +
+  geom_col() +
+  coord_flip() +
+      labs(x = "Count",
+      y = "Location",
+      title = "Where Twitter users are from - unique locations ")
+
+
+
+users %>%
+  count(location, sort = TRUE) %>%
+  mutate(location = reorder(location,n)) %>%
+  na.omit() %>%
+  top_n(20) %>%
+  ggplot(aes(x = location,y = n)) +
+  geom_col() +
+  coord_flip() +
+      labs(x = "Location",
+      y = "Count",
+      title = "Twitter users - unique locations ")
+print(users)
+
+
+
+```
+
+
+

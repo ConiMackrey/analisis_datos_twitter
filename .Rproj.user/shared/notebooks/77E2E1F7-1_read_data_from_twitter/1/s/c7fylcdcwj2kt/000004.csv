@@ -1,0 +1,5 @@
+"0","ciampittilab <- search_tweets2 (""ciampittilab"" , n=1800)
+"
+"2","Error in search_tweets2(""ciampittilab"", n = 1800) : 
+  could not find function ""search_tweets2""
+"

@@ -1,0 +1,7 @@
+"0","#¿De dónde son los usuarios?"
+"0",""
+"0","ciampittilab_tweets <- search_tweets(""ciampittilab"", n = 18000,"
+"0","                             include_rts = FALSE)"
+"2",""
+"2","Downloading [-----------------------------------------]   1%"
+"0","head(ciampittilab_tweets, n = 2)"

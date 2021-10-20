@@ -1,0 +1,26 @@
+{
+    "id": "1C507CC1",
+    "path": "~/Documents/proyectos/analisis_datos_twitter/markdown/2_read_data_from_twitter.Rmd",
+    "project_path": "markdown/2_read_data_from_twitter.Rmd",
+    "type": "r_markdown",
+    "hash": "209404670",
+    "contents": "",
+    "dirty": false,
+    "created": 1634249768393.0,
+    "source_on_save": false,
+    "relative_order": 3,
+    "properties": {
+        "source_window_id": "",
+        "Source": "Source",
+        "cursorPosition": "29,0",
+        "scrollLine": "14"
+    },
+    "folds": "",
+    "lastKnownWriteTime": 1634256628,
+    "encoding": "UTF-8",
+    "collab_server": "",
+    "source_window": "",
+    "last_content_update": 1634256629023,
+    "read_only": false,
+    "read_only_alternatives": []
+}

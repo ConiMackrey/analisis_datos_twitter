@@ -1,0 +1,4 @@
+"0","ciampittilab <- query %>%"
+"0","  filter (is_retweet ==""FALSE"") %>%"
+"0","  select (screen_name, favorite_count, retweet_count,text) %>%"
+"0","  arrange (desc(favorite_count))"
