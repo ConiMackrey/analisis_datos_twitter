@@ -1,0 +1,9 @@
+"0","# create token named ""twitter_token"""
+"0","twitter_token <- create_token("
+"0","  app = ciampittilab-app,"
+"0","  consumer_key = Fid4dKh0t1cZTI5UB4eMpKrPj,"
+"0","  consumer_secret = K5XNSZfDZ5B0jmVuQ17ZJCDNGvsxqkqy5eFM1vZstbDTmVTVYK,"
+"0","  access_token = access_token,"
+"0","  access_secret = access_secret)"
+"2","Error in stopifnot(is.character(app)) : object 'ciampittilab' not found
+"

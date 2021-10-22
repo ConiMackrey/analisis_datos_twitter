@@ -1,0 +1,36 @@
+---
+title: "API_Twitter"
+author: "Constanza Mackrey"
+date: "10/21/2021"
+output: html_document
+---
+
+```{r}
+library(rtweet)
+library(httpuv)
+library(tidyverse)
+library(readr)
+library(cowplot)
+```
+
+```{r}
+# whatever name you assigned to your created app
+appname <- "ciampittilab-app"
+
+## api key (example below is not a real key)
+key <- "Fid4dKh0t1cZTI5UB4eMpKrPj"
+
+## api secret (example below is not a real key)
+secret <- "K5XNSZfDZ5B0jmVuQ17ZJCDNGvsxqkqy5eFM1vZstbDTmVTVYK"
+```
+
+```{r}
+# create token named "twitter_token"
+twitter_token <- create_token(
+  app = ciampittilab-app,
+  consumer_key = Fid4dKh0t1cZTI5UB4eMpKrPj,
+  consumer_secret = K5XNSZfDZ5B0jmVuQ17ZJCDNGvsxqkqy5eFM1vZstbDTmVTVYK,
+  access_token = access_token,
+  access_secret = access_secret)
+```
+
